@@ -1,25 +1,48 @@
-const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
-const message = document.getElementById("message");
+const noBtn = document.getElementById("noBtn");
+const popup = document.getElementById("popup");
+const popupText = document.getElementById("popupText");
+const popupClose = document.getElementById("popupClose");
 
-let moveCount = 0;
+let noCount = 0;
 
-noBtn.addEventListener("mouseenter", () => {
-    moveCount++;
+function showPopup(text) {
+    popupText.textContent = text;
+    popup.classList.remove("hidden");
+}
 
-    if (moveCount < 4) {
-        const x = Math.random() * 60 - 30;
-        const y = Math.random() * 40 - 20;
+popupClose.onclick = () => {
+    popup.classList.add("hidden");
+};
 
-        noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    } else {
-        noBtn.style.transform = "translate(0,0)";
-        message.textContent = "😅 Just say YES already!";
+noBtn.addEventListener("click", () => {
+    noCount++;
+
+    if (noCount === 1) {
+        showPopup("Bad luck 😜 Try again!");
+        noBtn.style.width = "80px";
+        yesBtn.style.width = "160px";
+    }
+
+    else if (noCount === 2) {
+        showPopup("Whatttt againn.... 🥺💔");
+        noBtn.style.width = "60px";
+        yesBtn.style.width = "200px";
+    }
+
+    else if (noCount >= 3) {
+        showPopup("Idhuku mela unaku option illa 😌❤️");
+        noBtn.style.display = "none";
+        yesBtn.style.width = "240px";
     }
 });
 
 yesBtn.addEventListener("click", () => {
-    message.textContent = "Yayyy 💖 I knew it!";
-    noBtn.disabled = true;
+    if (noCount === 0) {
+        showPopup("Hurrayyy 🥳💖 So happieee!");
+    } else {
+        showPopup("I knew you will come here only 😏❤️");
+    }
+
     yesBtn.disabled = true;
 });

@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Day Wish</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffe6e6;
-            color: #ff4d4d;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 3em;
-        }
-        p {
-            font-size: 1.5em;
-        }
-        .heart {
-            font-size: 4em;
-            color: red;
-        }
-        .button {
-            background-color: #ff4d4d;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 1.2em;
-        }
-    </style>
+    <title>Will You Be My Valentine? 💕</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Happy Valentine's Day!</h1>
-    <p>Spread love and joy on this special day.</p>
-    <div class="heart">❤️</div>
-    <a href="#" class="button">Send a Wish!</a>
+    <div class="container">
+        <div class="stars"></div>
+        
+        <div class="content">
+            <div class="question-box">
+                <h1 class="question-text">Will you be my Valentine? 💕</h1>
+                <p class="subtitle">This could be the best decision ever...</p>
+            </div>
+
+            <div class="button-container">
+                <button class="btn btn-yes" id="yesBtn">YES 💖</button>
+                <button class="btn btn-no" id="noBtn">NO</button>
+            </div>
+        </div>
+
+        <div class="response-box" id="responseBox" style="display: none;">
+            <div class="love-animation">
+                <div class="heart" style="animation-delay: 0s;">💕</div>
+                <div class="heart" style="animation-delay: 0.2s;">💕</div>
+                <div class="heart" style="animation-delay: 0.4s;">💕</div>
+                <div class="heart" style="animation-delay: 0.6s;">💕</div>
+                <div class="heart" style="animation-delay: 0.8s;">💕</div>
+            </div>
+            
+            <h2 class="response-text">You've made me the happiest! 🎉💕</h2>
+            <p class="celebration-text">Let's celebrate our love together!</p>
+            
+            <div class="confetti"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -6,58 +6,95 @@
 
 body {
     height: 100vh;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Segoe UI', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
 }
 
 .page {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    text-align: center;
+}
+
+.greeting {
+    color: #fff;
+    font-size: 2.2em;
+    margin-bottom: 25px;
 }
 
 .card {
-    background: white;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
     padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    width: 320px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: white;
+    width: 360px;
 }
 
-h1 {
+.card h1 {
     margin-bottom: 30px;
 }
 
 .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 20px;
 }
 
 .btn {
-    width: 120px;
-    height: 45px;
-    border-radius: 30px;
     border: none;
+    border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    height: 45px;
 }
 
 .yes {
     background: #ff4d6d;
     color: white;
+    width: 120px;
 }
 
 .no {
-    background: #ddd;
+    background: #f1f1f1;
+    color: #333;
+    width: 120px;
 }
 
-.message {
-    margin-top: 25px;
+/* Popup */
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 25px 35px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.popup-content p {
     font-size: 18px;
-    color: #ff4d6d;
+    margin-bottom: 15px;
+}
+
+.popup-content button {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: none;
+    background: #667eea;
+    color: white;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }

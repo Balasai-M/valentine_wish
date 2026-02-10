@@ -1,29 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine 💖</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<title>Love Blast Animation</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    overflow: hidden;
+  }
+
+  /* Main Page */
+  #mainPage {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    transition: opacity 0.6s ease;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+
+  button {
+    padding: 15px 40px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #fff;
+    color: #ff4d6d;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+  }
+
+  button:hover {
+    transform: scale(1.08);
+  }
+
+  /* Animation Screen */
+  #animationScreen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, #ff4d6d, #b5179e);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+  }
+
+  #successText {
+    font-size: 2.8rem;
+    margin-top: 20px;
+    animation: pop 0.6s ease forwards;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Hearts */
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: floatUp 2.5s linear forwards;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-300px) scale(1.8);
+      opacity: 0;
+    }
+  }
+</style>
 </head>
+
 <body>
 
-<div class="page">
-    <h2 class="greeting">Heylooo Varshitha... 💕</h2>
-
-    <div class="card">
-        <h1>Will you be my Valentine? 💘</h1>
-
-        <div class="buttons">
-            <button id="yesBtn" class="btn yes">YES</button>
-            <button id="noBtn" class="btn no">NO</button>
-        </div>
-
-        <!-- Animated status message -->
-        <div id="status" class="status hidden"></div>
-    </div>
+<!-- Main Content -->
+<div id="mainPage">
+  <h1>Will you be mine? ❤️</h1>
+  <button onclick="startAnimation()">YES</button>
 </div>
 
-<script src="script.js"></script>
+<!-- Animation Screen -->
+<div id="animationScreen">
+  <div id="successText">Love Accepted 💖</div>
+</div>
+
+<script>
+  function startAnimation() {
+    const mainPage = document.getElementById("mainPage");
+    const animationScreen = document.getElementById("animationScreen");
+
+    mainPage.style.opacity = "0";
+
+    setTimeout(() => {
+      mainPage.style.display = "none";
+      animationScreen.style.display = "flex";
+      blastHearts();
+    }, 600);
+  }
+
+  function blastHearts() {
+    for (let i = 0; i < 40; i++) {
+      setTimeout(createHeart, i * 60);
+    }
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.bottom = "20px";
+    heart.style.fontSize = Math.random() * 20 + 20 + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 2500);
+  }
+</script>
+
 </body>
 </html>

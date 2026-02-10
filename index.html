@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Love Blast Animation</title>
+<title>Heylo Varshitha ❤️</title>
 
 <style>
   body {
@@ -21,11 +21,23 @@
     align-items: center;
     color: #fff;
     transition: opacity 0.6s ease;
+    text-align: center;
   }
 
   h1 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 20px;
   }
 
   button {
@@ -34,10 +46,19 @@
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    background: #fff;
-    color: #ff4d6d;
     font-weight: bold;
     transition: transform 0.2s ease;
+  }
+
+  .yes-btn {
+    background: #fff;
+    color: #ff4d6d;
+  }
+
+  .no-btn {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
   }
 
   button:hover {
@@ -57,7 +78,7 @@
   }
 
   #successText {
-    font-size: 2.8rem;
+    font-size: 3rem;
     margin-top: 20px;
     animation: pop 0.6s ease forwards;
   }
@@ -65,6 +86,19 @@
   @keyframes pop {
     0% { transform: scale(0.5); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* NO Response */
+  #noScreen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #333, #555);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    text-align: center;
   }
 
   /* Hearts */
@@ -91,17 +125,28 @@
 
 <!-- Main Content -->
 <div id="mainPage">
-  <h1>Will you be mine? ❤️</h1>
-  <button onclick="startAnimation()">YES</button>
+  <h1>Heylo Varshitha.. ❤️</h1>
+  <p>Will you be mine?</p>
+
+  <div class="btn-group">
+    <button class="yes-btn" onclick="yesClicked()">YES</button>
+    <button class="no-btn" onclick="noClicked()">NO</button>
+  </div>
 </div>
 
-<!-- Animation Screen -->
+<!-- YES Animation Screen -->
 <div id="animationScreen">
-  <div id="successText">Love Accepted 💖</div>
+  <div id="successText">Yayyy! ❤️ Love Accepted 💖</div>
+</div>
+
+<!-- NO Screen -->
+<div id="noScreen">
+  <h1>It's okay 🌸</h1>
+  <p>Still wishing you a beautiful day 💙</p>
 </div>
 
 <script>
-  function startAnimation() {
+  function yesClicked() {
     const mainPage = document.getElementById("mainPage");
     const animationScreen = document.getElementById("animationScreen");
 
@@ -114,8 +159,20 @@
     }, 600);
   }
 
+  function noClicked() {
+    const mainPage = document.getElementById("mainPage");
+    const noScreen = document.getElementById("noScreen");
+
+    mainPage.style.opacity = "0";
+
+    setTimeout(() => {
+      mainPage.style.display = "none";
+      noScreen.style.display = "flex";
+    }, 600);
+  }
+
   function blastHearts() {
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 45; i++) {
       setTimeout(createHeart, i * 60);
     }
   }
@@ -131,9 +188,7 @@
 
     document.body.appendChild(heart);
 
-    setTimeout(() => {
-      heart.remove();
-    }, 2500);
+    setTimeout(() => heart.remove(), 2500);
   }
 </script>
 

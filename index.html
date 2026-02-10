@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valentine 💖</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="page">
+    <h2 class="greeting">Heylooo Varshitha... 💕</h2>
+
     <div class="card">
-        <h1>Will you be my Valentine? 💕</h1>
+        <h1>Will you be my Valentine? 💘</h1>
 
         <div class="buttons">
             <button id="yesBtn" class="btn yes">YES</button>
             <button id="noBtn" class="btn no">NO</button>
         </div>
+    </div>
+</div>
 
-        <div id="message" class="message"></div>
+<!-- Popup -->
+<div id="popup" class="popup hidden">
+    <div class="popup-content">
+        <p id="popupText"></p>
+        <button id="popupClose">OK</button>
     </div>
 </div>
 

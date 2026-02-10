@@ -1,42 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Day</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Valentine 💖</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <!-- Stars -->
-    <div class="stars"></div>
+<div class="page">
+    <div class="card">
+        <h1>Will you be my Valentine? 💕</h1>
 
-    <!-- Confetti -->
-    <div class="confetti"></div>
-
-    <!-- Main Content -->
-    <div class="content">
-        <div class="question-box">
-            <h1 class="question-text">Will you be my Valentine? 💘</h1>
-            <p class="subtitle">I promise lots of love & chocolates 🍫</p>
+        <div class="buttons">
+            <button id="yesBtn" class="btn yes">YES</button>
+            <button id="noBtn" class="btn no">NO</button>
         </div>
 
-        <div class="button-container" id="buttonContainer">
-            <button class="btn btn-yes" id="yesBtn">YES</button>
-            <button class="btn btn-no" id="noBtn">NO</button>
-        </div>
-    </div>
-
-    <!-- Response Box -->
-    <div class="response-box" id="responseBox" style="display:none;">
-        <div class="love-animation">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="response-text">Yayyy! 💕</div>
-        <div class="celebration-text">
-            You just made my day! Happy Valentine’s 💖
-        </div>
+        <div id="message" class="message"></div>
     </div>
 </div>
 

@@ -1,35 +1,25 @@
-// Updated script.js to fix NO button movement boundaries
-const noButton = document.getElementById('noButton');
-const yesButton = document.getElementById('yesButton');
-const container = document.getElementById('buttonContainer');
+// Updated script.js to handle NO button boundary properly
+function handleNoButton() {
+    const noButton = document.getElementById('no-button');
+    const yesButton = document.getElementById('yes-button');
+    const buttonContainer = document.getElementById('button-container');
 
-noButton.addEventListener('mouseover', () => {
-    const containerRect = container.getBoundingClientRect();
-    const noButtonRect = noButton.getBoundingClientRect();
-    const yesButtonRect = yesButton.getBoundingClientRect();
+    // Make sure the NO button stays within its container
+    noButton.addEventListener('mouseenter', () => {
+        const containerRect = buttonContainer.getBoundingClientRect();
+        const noButtonRect = noButton.getBoundingClientRect();
 
-    // Calculate new position within bounds
-    let newX = noButton.offsetLeft + (Math.random() > 0.5 ? 20 : -20);
-    let newY = noButton.offsetTop + (Math.random() > 0.5 ? 20 : -20);
+        if (noButtonRect.top < containerRect.top) {
+            noButton.style.top = '0px';
+        }
+    });
 
-    // Ensuring the NO button does not escape above YES button or outside the container
-    if (newY < yesButtonRect.bottom) {
-        newY = yesButtonRect.bottom;
-    }
-    if (newX < 0) {
-        newX = 0;
-    }
-    if (newX + noButtonRect.width > containerRect.width) {
-        newX = containerRect.width - noButtonRect.width;
-    }
-    if (newY < 0) {
-        newY = 0;
-    }
-    if (newY + noButtonRect.height > containerRect.height) {
-        newY = containerRect.height - noButtonRect.height;
-    }
+    // Prevent NO button from escaping above YES button
+    noButton.addEventListener('mouseleave', () => {
+        if (noButton.getBoundingClientRect().bottom < yesButton.getBoundingClientRect().top) {
+            noButton.style.top = yesButton.offsetTop + 'px';
+        }
+    });
+}
 
-    // Apply position
-    noButton.style.left = newX + 'px';
-    noButton.style.top = newY + 'px';
-});
+handleNoButton();

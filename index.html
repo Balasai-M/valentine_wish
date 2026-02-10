@@ -152,6 +152,7 @@
     setTimeout(() => status.classList.remove("show"), 2000);
   }
 
+  // NO button click logic
   noBtn.addEventListener("click", () => {
     noCount++;
 
@@ -170,6 +171,18 @@
     }
   });
 
+  // NO button dodge effect
+  noBtn.addEventListener("mouseenter", () => {
+    if (noCount < 2) { // dodge only first two tries
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.position = "absolute";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+  });
+
+  // YES button click logic
   yesBtn.addEventListener("click", () => {
     mainPage.style.opacity = "0";
 

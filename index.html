@@ -38,6 +38,7 @@
   .btn-group {
     display: flex;
     gap: 20px;
+    position: relative;
   }
 
   button {
@@ -47,7 +48,9 @@
     border-radius: 30px;
     cursor: pointer;
     font-weight: bold;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, width 0.3s ease;
+    position: relative;
+    z-index: 1;
   }
 
   .yes-btn {
@@ -88,17 +91,16 @@
     100% { transform: scale(1); opacity: 1; }
   }
 
-  /* NO Response */
-  #noScreen {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(135deg, #333, #555);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #fff;
-    text-align: center;
+  /* Status messages */
+  #status {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #status.show {
+    opacity: 1;
   }
 
   /* Hearts */
@@ -109,14 +111,8 @@
   }
 
   @keyframes floatUp {
-    0% {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(-300px) scale(1.8);
-      opacity: 0;
-    }
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-300px) scale(1.8); opacity: 0; }
   }
 </style>
 </head>
@@ -129,9 +125,11 @@
   <p>Will you be mine?</p>
 
   <div class="btn-group">
-    <button class="yes-btn" onclick="yesClicked()">YES</button>
-    <button class="no-btn" onclick="noClicked()">NO</button>
+    <button id="yesBtn" class="yes-btn">YES</button>
+    <button id="noBtn" class="no-btn">NO</button>
   </div>
+
+  <div id="status"></div>
 </div>
 
 <!-- YES Animation Screen -->
@@ -139,17 +137,40 @@
   <div id="successText">Yayyy! ❤️ Love Accepted 💖</div>
 </div>
 
-<!-- NO Screen -->
-<div id="noScreen">
-  <h1>It's okay 🌸</h1>
-  <p>Still wishing you a beautiful day 💙</p>
-</div>
-
 <script>
-  function yesClicked() {
-    const mainPage = document.getElementById("mainPage");
-    const animationScreen = document.getElementById("animationScreen");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const status = document.getElementById("status");
+  const mainPage = document.getElementById("mainPage");
+  const animationScreen = document.getElementById("animationScreen");
 
+  let noCount = 0;
+
+  function showStatus(text) {
+    status.textContent = text;
+    status.classList.add("show");
+    setTimeout(() => status.classList.remove("show"), 2000);
+  }
+
+  noBtn.addEventListener("click", () => {
+    noCount++;
+
+    if (noCount === 1) {
+      showStatus("Bad luck 😜 Try again!");
+      noBtn.style.width = "80px";
+      yesBtn.style.width = "160px";
+    } else if (noCount === 2) {
+      showStatus("Whatttt againn.... 🥺💔");
+      noBtn.style.width = "60px";
+      yesBtn.style.width = "200px";
+    } else {
+      showStatus("Idhuku mela unaku option illa 😌❤️");
+      noBtn.style.display = "none";
+      yesBtn.style.width = "240px";
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
     mainPage.style.opacity = "0";
 
     setTimeout(() => {
@@ -157,19 +178,7 @@
       animationScreen.style.display = "flex";
       blastHearts();
     }, 600);
-  }
-
-  function noClicked() {
-    const mainPage = document.getElementById("mainPage");
-    const noScreen = document.getElementById("noScreen");
-
-    mainPage.style.opacity = "0";
-
-    setTimeout(() => {
-      mainPage.style.display = "none";
-      noScreen.style.display = "flex";
-    }, 600);
-  }
+  });
 
   function blastHearts() {
     for (let i = 0; i < 45; i++) {
@@ -181,11 +190,9 @@
     const heart = document.createElement("div");
     heart.className = "heart";
     heart.innerHTML = "❤️";
-
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.bottom = "20px";
     heart.style.fontSize = Math.random() * 20 + 20 + "px";
-
     document.body.appendChild(heart);
 
     setTimeout(() => heart.remove(), 2500);

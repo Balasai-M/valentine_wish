@@ -3,17 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Valentine's Day</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Will you be my Valentine?</h1>
-    <div class="button-container">
-        <button id="yesButton">YES</button>
-        <button id="noButton">NO</button>
+
+<div class="container">
+    <!-- Stars -->
+    <div class="stars"></div>
+
+    <!-- Confetti -->
+    <div class="confetti"></div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="question-box">
+            <h1 class="question-text">Will you be my Valentine? 💘</h1>
+            <p class="subtitle">I promise lots of love & chocolates 🍫</p>
+        </div>
+
+        <div class="button-container" id="buttonContainer">
+            <button class="btn btn-yes" id="yesBtn">YES</button>
+            <button class="btn btn-no" id="noBtn">NO</button>
+        </div>
     </div>
-    <div id="messageBox"></div>
-    <div id="responseBox"></div>
-    <script src="script.js"></script>
+
+    <!-- Response Box -->
+    <div class="response-box" id="responseBox" style="display:none;">
+        <div class="love-animation">
+            <div class="heart">❤️</div>
+        </div>
+        <div class="response-text">Yayyy! 💕</div>
+        <div class="celebration-text">
+            You just made my day! Happy Valentine’s 💖
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

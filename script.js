@@ -1,37 +1,34 @@
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const popup = document.getElementById("popup");
-const popupText = document.getElementById("popupText");
-const popupClose = document.getElementById("popupClose");
+const status = document.getElementById("status");
 
 let noCount = 0;
 
-function showPopup(text) {
-    popupText.textContent = text;
-    popup.classList.remove("hidden");
-}
+function showStatus(text) {
+    status.classList.remove("hidden");
+    status.textContent = text;
 
-popupClose.onclick = () => {
-    popup.classList.add("hidden");
-};
+    // restart animation every time
+    status.style.animation = "none";
+    status.offsetHeight; // force reflow
+    status.style.animation = null;
+}
 
 noBtn.addEventListener("click", () => {
     noCount++;
 
     if (noCount === 1) {
-        showPopup("Bad luck 😜 Try again!");
+        showStatus("Bad luck 😜 Try again!");
         noBtn.style.width = "80px";
         yesBtn.style.width = "160px";
     }
-
     else if (noCount === 2) {
-        showPopup("Whatttt againn.... 🥺💔");
+        showStatus("Whatttt againn.... 🥺💔");
         noBtn.style.width = "60px";
         yesBtn.style.width = "200px";
     }
-
-    else if (noCount >= 3) {
-        showPopup("Idhuku mela unaku option illa 😌❤️");
+    else {
+        showStatus("Idhuku mela unaku option illa 😌❤️");
         noBtn.style.display = "none";
         yesBtn.style.width = "240px";
     }
@@ -39,9 +36,9 @@ noBtn.addEventListener("click", () => {
 
 yesBtn.addEventListener("click", () => {
     if (noCount === 0) {
-        showPopup("Hurrayyy 🥳💖 So happieee!");
+        showStatus("Hurrayyy 🥳💖 So happieee!");
     } else {
-        showPopup("I knew you will come here only 😏❤️");
+        showStatus("I knew you will come here only 😏❤️");
     }
 
     yesBtn.disabled = true;

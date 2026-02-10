@@ -13,7 +13,7 @@
   }
 
   /* Main Page */
-  #mainPage {
+  #placeScreen, #mainPage {
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -35,10 +35,24 @@
     opacity: 0.9;
   }
 
-  .btn-group {
+  .place-list, .btn-group {
     display: flex;
     gap: 20px;
-    position: relative;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .place {
+    padding: 15px 30px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .place:hover {
+    transform: scale(1.1);
+    background: rgba(255,255,255,0.35);
   }
 
   button {
@@ -119,8 +133,19 @@
 
 <body>
 
+<!-- Place Selection Screen -->
+<div id="placeScreen">
+  <h1>Choose a place first ❤️</h1>
+  <p>Click on a place to continue...</p>
+  <div class="place-list">
+    <div class="place" onclick="choosePlace('Beach')">Beach</div>
+    <div class="place" onclick="choosePlace('Park')">Park</div>
+    <div class="place" onclick="choosePlace('Cafe')">Cafe</div>
+  </div>
+</div>
+
 <!-- Main Content -->
-<div id="mainPage">
+<div id="mainPage" style="display:none;">
   <h1>Heylo Varshitha.. ❤️</h1>
   <p>Will you be mine?</p>
 
@@ -143,6 +168,7 @@
   const status = document.getElementById("status");
   const mainPage = document.getElementById("mainPage");
   const animationScreen = document.getElementById("animationScreen");
+  const placeScreen = document.getElementById("placeScreen");
 
   let noCount = 0;
 
@@ -150,6 +176,19 @@
     status.textContent = text;
     status.classList.add("show");
     setTimeout(() => status.classList.remove("show"), 2000);
+  }
+
+  // Place selection
+  function choosePlace(placeName) {
+    // Optional: show selected place somewhere
+    console.log("Place chosen:", placeName);
+
+    placeScreen.style.opacity = "0";
+    setTimeout(() => {
+      placeScreen.style.display = "none";
+      mainPage.style.display = "flex";
+      mainPage.style.opacity = "1";
+    }, 600);
   }
 
   // NO button click logic

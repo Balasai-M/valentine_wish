@@ -3,41 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Be My Valentine? 💕</title>
     <link rel="stylesheet" href="style.css">
+    <title>Valentine's Day</title>
 </head>
 <body>
-    <div class="container">
-        <div class="stars"></div>
-        
-        <div class="content">
-            <div class="question-box">
-                <h1 class="question-text">Will you be my Valentine? 💕</h1>
-                <p class="subtitle">This could be the best decision ever...</p>
-            </div>
-
-            <div class="button-container" id="buttonContainer">
-                <button class="btn btn-yes" id="yesBtn">YES 💖</button>
-                <button class="btn btn-no" id="noBtn">NO</button>
-            </div>
-        </div>
-
-        <div class="response-box" id="responseBox" style="display: none;">
-            <div class="love-animation">
-                <div class="heart" style="animation-delay: 0s;">💕</div>
-                <div class="heart" style="animation-delay: 0.2s;">💕</div>
-                <div class="heart" style="animation-delay: 0.4s;">💕</div>
-                <div class="heart" style="animation-delay: 0.6s;">💕</div>
-                <div class="heart" style="animation-delay: 0.8s;">💕</div>
-            </div>
-            
-            <h2 class="response-text">You've made me the happiest! 🎉💕</h2>
-            <p class="celebration-text">Let's celebrate our love together!</p>
-            
-            <div class="confetti"></div>
-        </div>
+    <h1>Will you be my Valentine?</h1>
+    <div class="button-container">
+        <button id="yesButton">YES</button>
+        <button id="noButton">NO</button>
     </div>
-
+    <div id="messageBox"></div>
+    <div id="responseBox"></div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Heylo Varshitha ❤️</title>
 
 <style>
@@ -9,24 +9,8 @@
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
-    transition: background 1s ease;
-  }
-
-  /* Default background */
-  body.default-bg {
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  }
-
-  body.beach-bg {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-  }
-
-  body.park-bg {
-    background: linear-gradient(135deg, #56ab2f, #a8e063);
-  }
-
-  body.cafe-bg {
-    background: linear-gradient(135deg, #c79081, #dfa579);
+    color: white;
   }
 
   #placeScreen, #mainPage {
@@ -35,7 +19,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
     text-align: center;
     transition: opacity 0.6s ease;
   }
@@ -44,9 +27,15 @@
     font-size: 2.8rem;
   }
 
-  p {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
+  .glow-name {
+    font-size: 3rem;
+    font-weight: bold;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d; }
+    to { text-shadow: 0 0 20px #fff, 0 0 40px #ff4d6d; }
   }
 
   .place-list, .btn-group {
@@ -75,7 +64,6 @@
     cursor: pointer;
     font-weight: bold;
     transition: width 0.3s ease, transform 0.2s ease;
-    position: relative;
   }
 
   .yes-btn {
@@ -95,9 +83,8 @@
 
   #status {
     margin-top: 20px;
-    font-size: 1.2rem;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: 0.3s;
   }
 
   #status.show {
@@ -111,55 +98,53 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: radial-gradient(circle, #ff4d6d, #b5179e);
-    color: white;
+    background: radial-gradient(circle, #1a1a1a, #000);
   }
 
   #successText {
     font-size: 2.8rem;
-    animation: pop 0.6s ease forwards;
+    margin-top: 20px;
+    text-align: center;
   }
 
-  @keyframes pop {
-    0% { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+  /* Ring animation */
+  .ring {
+    font-size: 100px;
+    animation: ringOpen 1.5s ease forwards;
   }
 
-  .heart, .confetti {
-    position: absolute;
-    animation: floatUp 3s linear forwards;
+  @keyframes ringOpen {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
 
-  @keyframes floatUp {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-500px); opacity: 0; }
+  canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
   }
 
 </style>
 </head>
 
-<body class="default-bg">
+<body>
 
-<!-- MUSIC -->
-<audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
+<canvas id="fireworks"></canvas>
 
 <!-- PLACE SCREEN -->
 <div id="placeScreen">
   <h1>Choose a place first ❤️</h1>
-  <p>Click to continue...</p>
   <div class="place-list">
-    <div class="place" onclick="choosePlace('Beach 🏖️','beach-bg')">Beach 🏖️</div>
-    <div class="place" onclick="choosePlace('Park 🌳','park-bg')">Park 🌳</div>
-    <div class="place" onclick="choosePlace('Cafe ☕','cafe-bg')">Cafe ☕</div>
+    <div class="place" onclick="choosePlace('Beach 🏖️')">Beach 🏖️</div>
+    <div class="place" onclick="choosePlace('Park 🌳')">Park 🌳</div>
+    <div class="place" onclick="choosePlace('Cafe ☕')">Cafe ☕</div>
   </div>
 </div>
 
 <!-- MAIN QUESTION -->
 <div id="mainPage" style="display:none;">
-  <h1>Heylo Varshitha.. ❤️</h1>
-  <p>Will you be mine?</p>
+  <div class="glow-name">Heylo Varshitha ❤️</div>
+  <h1>Will you be my Valentine (mine)? 💖</h1>
 
   <div class="btn-group">
     <button id="yesBtn" class="yes-btn">YES</button>
@@ -169,8 +154,9 @@
   <div id="status"></div>
 </div>
 
-<!-- SUCCESS -->
+<!-- SUCCESS SCREEN -->
 <div id="animationScreen">
+  <div class="ring">💍</div>
   <div id="successText"></div>
 </div>
 
@@ -182,22 +168,14 @@
   const animationScreen = document.getElementById("animationScreen");
   const placeScreen = document.getElementById("placeScreen");
   const successText = document.getElementById("successText");
-  const music = document.getElementById("bgMusic");
 
   let noCount = 0;
   let selectedPlace = "";
 
-  function choosePlace(placeName, bgClass) {
+  function choosePlace(placeName) {
     selectedPlace = placeName;
-    document.body.className = bgClass;
-
-    music.play();
-
-    placeScreen.style.opacity = "0";
-    setTimeout(() => {
-      placeScreen.style.display = "none";
-      mainPage.style.display = "flex";
-    }, 600);
+    placeScreen.style.display = "none";
+    mainPage.style.display = "flex";
   }
 
   function showStatus(text) {
@@ -238,33 +216,48 @@
     mainPage.style.display = "none";
     animationScreen.style.display = "flex";
     successText.innerHTML =
-      `Yayyy! ❤️ Love Accepted at the ${selectedPlace} 💖`;
-
-    blastHearts();
-    blastConfetti();
+      `She said YES at the ${selectedPlace} ❤️✨`;
+    startFireworks();
   });
 
-  function blastHearts() {
-    for (let i = 0; i < 40; i++) {
-      createElement("❤️", "heart");
-    }
+  /* FIREWORKS EFFECT */
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  function startFireworks() {
+    setInterval(() => {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height / 2;
+      for (let i = 0; i < 30; i++) {
+        drawParticle(x, y);
+      }
+    }, 600);
   }
 
-  function blastConfetti() {
-    for (let i = 0; i < 40; i++) {
-      createElement("🎉", "confetti");
-    }
-  }
+  function drawParticle(x, y) {
+    const radius = Math.random() * 3;
+    const angle = Math.random() * 2 * Math.PI;
+    const speed = Math.random() * 4;
+    const dx = Math.cos(angle) * speed;
+    const dy = Math.sin(angle) * speed;
 
-  function createElement(symbol, className) {
-    const el = document.createElement("div");
-    el.className = className;
-    el.innerHTML = symbol;
-    el.style.left = Math.random() * 100 + "vw";
-    el.style.bottom = "0px";
-    el.style.fontSize = Math.random() * 20 + 20 + "px";
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 3000);
+    let life = 30;
+
+    function animate() {
+      if (life <= 0) return;
+      ctx.fillStyle = `hsl(${Math.random()*360},100%,60%)`;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI*2);
+      ctx.fill();
+      x += dx;
+      y += dy;
+      life--;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   }
 </script>
 

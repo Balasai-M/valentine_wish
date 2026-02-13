@@ -103,7 +103,7 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  pointer-events: none;
+  pointer-events: none;  /* 🔥 IMPORTANT FIX */
   z-index: 0;
 }
 </style>
@@ -129,83 +129,85 @@ canvas {
 <canvas id="fireworks"></canvas>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const yesBtn = document.getElementById("yesBtn");
-  const noBtn = document.getElementById("noBtn");
-  const mainPage = document.getElementById("mainPage");
-  const ringContainer = document.getElementById("ringContainer");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const mainPage = document.getElementById("mainPage");
+const ringContainer = document.getElementById("ringContainer");
 
-  /* 😈 NO button runs away forever */
-  noBtn.addEventListener("mouseenter", () => {
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-    noBtn.style.position = "absolute";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-  });
-  noBtn.addEventListener("click", e => e.preventDefault());
+/* 😈 NO button runs away forever */
+noBtn.addEventListener("mouseenter", () => {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
 
-  /* 💍 YES button */
-  yesBtn.addEventListener("click", () => {
-    mainPage.style.display = "none";
-    ringContainer.style.display = "flex";
-    startFireworks();
-  });
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
 
-  /* 🎇 Fireworks */
-  const canvas = document.getElementById("fireworks");
-  const ctx = canvas.getContext("2d");
+noBtn.addEventListener("click", (e) => e.preventDefault());
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+/* 💍 YES click — no location check needed */
+yesBtn.addEventListener("click", () => {
+  mainPage.style.display = "none";
+  ringContainer.style.display = "flex";
+  startFireworks();
+});
+
+/* 🎇 Fireworks */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function createFirework(x, y) {
+  for (let i = 0; i < 50; i++) {
+    particles.push({
+      x: x,
+      y: y,
+      radius: 2,
+      color: `hsl(${Math.random() * 360},100%,50%)`,
+      speedX: (Math.random() - 0.5) * 6,
+      speedY: (Math.random() - 0.5) * 6,
+      alpha: 1
+    });
   }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
+}
 
-  let fireworks = [];
-  let particles = [];
+function animateFireworks() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  class Firework {
-    constructor(x, y, targetY) {
-      this.x = x;
-      this.y = y;
-      this.targetY = targetY;
-      this.speed = 5 + Math.random() * 3;
-      this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-    }
-    update() {
-      this.y -= this.speed;
-      if (this.y <= this.targetY) {
-        explode(this.x, this.y, this.color);
-        return false;
-      }
-      return true;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = this.color;
-      ctx.fill();
-    }
-  }
+  particles.forEach((p, index) => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.alpha -= 0.01;
 
-  class Particle {
-    constructor(x, y, color) {
-      this.x = x;
-      this.y = y;
-      this.color = color;
-      this.speedX = (Math.random() - 0.5) * 6;
-      this.speedY = (Math.random() - 0.5) * 6;
-      this.alpha = 1;
-      this.gravity = 0.05;
+    ctx.globalAlpha = p.alpha;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+
+    if (p.alpha <= 0) {
+      particles.splice(index, 1);
     }
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY + this.gravity;
-      this.alpha -= 0.015;
-      return this.alpha > 0;
-    }
-    draw() {
-      ctx.globalAlpha = this.alpha;
-      ctx.beginPath();
+  });
+
+  requestAnimationFrame(animateFireworks);
+}
+
+function startFireworks() {
+  setInterval(() => {
+    createFirework(
+      Math.random() * canvas.width,
+      Math.random() * canvas.height / 2
+    );
+  }, 600);
+
+  animateFireworks();
+}
+</script>
+
+</body>
+</html>

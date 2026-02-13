@@ -8,8 +8,25 @@
   body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
     overflow: hidden;
+    transition: background 1s ease;
+  }
+
+  /* Default background */
+  body.default-bg {
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  }
+
+  body.beach-bg {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+  }
+
+  body.park-bg {
+    background: linear-gradient(135deg, #56ab2f, #a8e063);
+  }
+
+  body.cafe-bg {
+    background: linear-gradient(135deg, #c79081, #dfa579);
   }
 
   #placeScreen, #mainPage {
@@ -18,27 +35,23 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #fff;
-    transition: opacity 0.6s ease;
+    color: white;
     text-align: center;
+    transition: opacity 0.6s ease;
   }
 
   h1 {
     font-size: 2.8rem;
-    margin-bottom: 10px;
   }
 
   p {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin-bottom: 40px;
-    opacity: 0.9;
   }
 
   .place-list, .btn-group {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
   }
 
   .place {
@@ -46,7 +59,7 @@
     background: rgba(255,255,255,0.2);
     border-radius: 20px;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
+    transition: 0.3s;
   }
 
   .place:hover {
@@ -57,43 +70,53 @@
   button {
     padding: 15px 40px;
     font-size: 18px;
-    border: none;
     border-radius: 30px;
+    border: none;
     cursor: pointer;
     font-weight: bold;
-    transition: transform 0.2s ease, width 0.3s ease;
+    transition: width 0.3s ease, transform 0.2s ease;
     position: relative;
   }
 
   .yes-btn {
-    background: #fff;
+    background: white;
     color: #ff4d6d;
   }
 
   .no-btn {
     background: transparent;
-    color: #fff;
-    border: 2px solid #fff;
+    border: 2px solid white;
+    color: white;
   }
 
   button:hover {
     transform: scale(1.08);
   }
 
+  #status {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  #status.show {
+    opacity: 1;
+  }
+
   #animationScreen {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle, #ff4d6d, #b5179e);
     display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: radial-gradient(circle, #ff4d6d, #b5179e);
     color: white;
   }
 
   #successText {
-    font-size: 3rem;
-    margin-top: 20px;
+    font-size: 2.8rem;
     animation: pop 0.6s ease forwards;
   }
 
@@ -102,40 +125,34 @@
     100% { transform: scale(1); opacity: 1; }
   }
 
-  #status {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  #status.show {
-    opacity: 1;
-  }
-
-  .heart {
+  .heart, .confetti {
     position: absolute;
-    font-size: 24px;
-    animation: floatUp 2.5s linear forwards;
+    animation: floatUp 3s linear forwards;
   }
 
   @keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-300px) scale(1.8); opacity: 0; }
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-500px); opacity: 0; }
   }
+
 </style>
 </head>
 
-<body>
+<body class="default-bg">
 
-<!-- PLACE SELECTION -->
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PLACE SCREEN -->
 <div id="placeScreen">
   <h1>Choose a place first ❤️</h1>
-  <p>Click on a place to continue...</p>
+  <p>Click to continue...</p>
   <div class="place-list">
-    <div class="place" onclick="choosePlace('Beach 🏖️')">Beach 🏖️</div>
-    <div class="place" onclick="choosePlace('Park 🌳')">Park 🌳</div>
-    <div class="place" onclick="choosePlace('Cafe ☕')">Cafe ☕</div>
+    <div class="place" onclick="choosePlace('Beach 🏖️','beach-bg')">Beach 🏖️</div>
+    <div class="place" onclick="choosePlace('Park 🌳','park-bg')">Park 🌳</div>
+    <div class="place" onclick="choosePlace('Cafe ☕','cafe-bg')">Cafe ☕</div>
   </div>
 </div>
 
@@ -152,7 +169,7 @@
   <div id="status"></div>
 </div>
 
-<!-- SUCCESS SCREEN -->
+<!-- SUCCESS -->
 <div id="animationScreen">
   <div id="successText"></div>
 </div>
@@ -165,25 +182,28 @@
   const animationScreen = document.getElementById("animationScreen");
   const placeScreen = document.getElementById("placeScreen");
   const successText = document.getElementById("successText");
+  const music = document.getElementById("bgMusic");
 
   let noCount = 0;
   let selectedPlace = "";
 
-  function showStatus(text) {
-    status.textContent = text;
-    status.classList.add("show");
-    setTimeout(() => status.classList.remove("show"), 2000);
-  }
-
-  function choosePlace(placeName) {
+  function choosePlace(placeName, bgClass) {
     selectedPlace = placeName;
+    document.body.className = bgClass;
+
+    music.play();
 
     placeScreen.style.opacity = "0";
     setTimeout(() => {
       placeScreen.style.display = "none";
       mainPage.style.display = "flex";
-      mainPage.style.opacity = "1";
     }, 600);
+  }
+
+  function showStatus(text) {
+    status.textContent = text;
+    status.classList.add("show");
+    setTimeout(() => status.classList.remove("show"), 2000);
   }
 
   noBtn.addEventListener("click", () => {
@@ -193,20 +213,17 @@
       showStatus("Bad luck 😜 Try again!");
       noBtn.style.width = "80px";
       yesBtn.style.width = "160px";
-    } 
-    else if (noCount === 2) {
+    } else if (noCount === 2) {
       showStatus("Whatttt againn.... 🥺💔");
       noBtn.style.width = "60px";
       yesBtn.style.width = "200px";
-    } 
-    else {
+    } else {
       showStatus("Idhuku mela unaku option illa 😌❤️");
       noBtn.style.display = "none";
       yesBtn.style.width = "240px";
     }
   });
 
-  // Dodge effect
   noBtn.addEventListener("mouseenter", () => {
     if (noCount < 2) {
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
@@ -218,36 +235,36 @@
   });
 
   yesBtn.addEventListener("click", () => {
-    mainPage.style.opacity = "0";
+    mainPage.style.display = "none";
+    animationScreen.style.display = "flex";
+    successText.innerHTML =
+      `Yayyy! ❤️ Love Accepted at the ${selectedPlace} 💖`;
 
-    setTimeout(() => {
-      mainPage.style.display = "none";
-      animationScreen.style.display = "flex";
-
-      // 🔥 Updated dynamic success message
-      successText.innerHTML = 
-        `Yayyy! ❤️ Love Accepted at the ${selectedPlace} 💖`;
-
-      blastHearts();
-    }, 600);
+    blastHearts();
+    blastConfetti();
   });
 
   function blastHearts() {
-    for (let i = 0; i < 45; i++) {
-      setTimeout(createHeart, i * 60);
+    for (let i = 0; i < 40; i++) {
+      createElement("❤️", "heart");
     }
   }
 
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.bottom = "20px";
-    heart.style.fontSize = Math.random() * 20 + 20 + "px";
-    document.body.appendChild(heart);
+  function blastConfetti() {
+    for (let i = 0; i < 40; i++) {
+      createElement("🎉", "confetti");
+    }
+  }
 
-    setTimeout(() => heart.remove(), 2500);
+  function createElement(symbol, className) {
+    const el = document.createElement("div");
+    el.className = className;
+    el.innerHTML = symbol;
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.bottom = "0px";
+    el.style.fontSize = Math.random() * 20 + 20 + "px";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
   }
 </script>
 

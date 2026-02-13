@@ -103,7 +103,7 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  pointer-events: none;  /* 🔥 IMPORTANT FIX */
+  pointer-events: none;
   z-index: 0;
 }
 </style>
@@ -129,11 +129,83 @@ canvas {
 <canvas id="fireworks"></canvas>
 
 <script>
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const mainPage = document.getElementById("mainPage");
-const ringContainer = document.getElementById("ringContainer");
+document.addEventListener("DOMContentLoaded", () => {
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const mainPage = document.getElementById("mainPage");
+  const ringContainer = document.getElementById("ringContainer");
 
-/* 😈 NO button runs away forever */
-noBtn.addEventListener("mouseenter", () => {
-  const x = Math.random() * (window.innerWidth - noBtn.offse*
+  /* 😈 NO button runs away forever */
+  noBtn.addEventListener("mouseenter", () => {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  });
+  noBtn.addEventListener("click", e => e.preventDefault());
+
+  /* 💍 YES button */
+  yesBtn.addEventListener("click", () => {
+    mainPage.style.display = "none";
+    ringContainer.style.display = "flex";
+    startFireworks();
+  });
+
+  /* 🎇 Fireworks */
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  let fireworks = [];
+  let particles = [];
+
+  class Firework {
+    constructor(x, y, targetY) {
+      this.x = x;
+      this.y = y;
+      this.targetY = targetY;
+      this.speed = 5 + Math.random() * 3;
+      this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    }
+    update() {
+      this.y -= this.speed;
+      if (this.y <= this.targetY) {
+        explode(this.x, this.y, this.color);
+        return false;
+      }
+      return true;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      this.speedX = (Math.random() - 0.5) * 6;
+      this.speedY = (Math.random() - 0.5) * 6;
+      this.alpha = 1;
+      this.gravity = 0.05;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY + this.gravity;
+      this.alpha -= 0.015;
+      return this.alpha > 0;
+    }
+    draw() {
+      ctx.globalAlpha = this.alpha;
+      ctx.beginPath();

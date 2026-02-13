@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>For Varshitha ❤️</title>
+
 <style>
 body {
   margin: 0;
@@ -12,6 +13,7 @@ body {
   height: 100vh;
 }
 
+/* Main Layout */
 #mainPage {
   height: 100vh;
   display: flex;
@@ -24,14 +26,15 @@ body {
   position: relative;
 }
 
+/* Glowing Name */
 .glow {
   font-size: 3rem;
   animation: glow 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
-  from { text-shadow: 0 0 10px #fff,0 0 20px #ff4da6; }
-  to { text-shadow: 0 0 20px #fff,0 0 40px #ff1a75; }
+  from { text-shadow: 0 0 10px #fff, 0 0 20px #ff4da6; }
+  to { text-shadow: 0 0 20px #fff, 0 0 40px #ff1a75; }
 }
 
 p { font-size: 1.4rem; margin-bottom: 40px; }
@@ -51,6 +54,7 @@ button {
 #yesBtn { background:white; color:#ff4d6d; }
 #noBtn { background:transparent; color:white; border:2px solid white; position: relative; }
 
+/* Ring Screen */
 #ringContainer {
   display: none;
   position: fixed;
@@ -68,11 +72,12 @@ button {
 
 .successText { font-size:2.2rem; margin-top:20px; text-align:center; }
 
+/* Fireworks Canvas */
 canvas {
   position: fixed;
   top:0; left:0;
   pointer-events: none;
-  z-index: -1;
+  z-index: -1; /* initially behind everything */
 }
 </style>
 </head>
@@ -96,13 +101,12 @@ canvas {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
   const yesBtn = document.getElementById("yesBtn");
   const noBtn = document.getElementById("noBtn");
   const mainPage = document.getElementById("mainPage");
   const ringContainer = document.getElementById("ringContainer");
 
-  /* NO button dodges */
+  // NO button dodges mouse
   noBtn.addEventListener("mouseenter", () => {
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -110,9 +114,9 @@ document.addEventListener("DOMContentLoaded", () => {
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
   });
-  noBtn.addEventListener("click", e=>e.preventDefault());
+  noBtn.addEventListener("click", e => e.preventDefault());
 
-  /* Canvas setup */
+  // Canvas setup
   const canvas = document.getElementById("fireworks");
   const ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth;
@@ -141,13 +145,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function animate() {
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    // fully transparent background so fireworks show above the ring screen
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
     particles.forEach((p,index)=>{
       p.x += p.speedX;
       p.y += p.speedY + p.gravity;
       p.alpha -= 0.015;
+
       ctx.globalAlpha = p.alpha;
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
@@ -155,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.fill();
       ctx.globalAlpha = 1;
 
-      if(p.alpha<=0) particles.splice(index,1);
+      if(p.alpha <= 0) particles.splice(index,1);
     });
 
     requestAnimationFrame(animate);
@@ -163,19 +168,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function startFireworks() {
     setInterval(()=>{
-      createFirework(Math.random()*canvas.width, canvas.height/2 + Math.random()*100);
+      // Random fireworks along the top half
+      createFirework(Math.random()*canvas.width, Math.random()*canvas.height/2);
     },300);
     animate();
   }
 
-  /* YES click triggers ring and fireworks */
-  yesBtn.addEventListener("click", ()=>{
+  // YES button click
+  yesBtn.addEventListener("click", () => {
     mainPage.style.display = "none";
     ringContainer.style.display = "flex";
+
+    // bring canvas above ring container
+    canvas.style.zIndex = 3;
+
     startFireworks();
   });
 
 });
 </script>
+
 </body>
 </html>

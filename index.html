@@ -101,6 +101,13 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
+  pointer-events: none;   /* 🔥 THIS FIXES IT */
+  z-index: 0;
+}
+
+#mainPage, #ringContainer {
+  position: relative;
+  z-index: 2;
 }
 </style>
 </head>

@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>For Varshitha ❤️</title>
-
 <style>
 body {
   margin: 0;
@@ -13,7 +12,6 @@ body {
   height: 100vh;
 }
 
-/* Main Layout */
 #mainPage {
   height: 100vh;
   display: flex;
@@ -22,30 +20,23 @@ body {
   align-items: center;
   color: white;
   text-align: center;
-  position: relative;
   z-index: 2;
+  position: relative;
 }
 
-/* Glowing Name */
 .glow {
   font-size: 3rem;
   animation: glow 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
-  from { text-shadow: 0 0 10px #fff, 0 0 20px #ff4da6; }
-  to { text-shadow: 0 0 20px #fff, 0 0 40px #ff1a75; }
+  from { text-shadow: 0 0 10px #fff,0 0 20px #ff4da6; }
+  to { text-shadow: 0 0 20px #fff,0 0 40px #ff1a75; }
 }
 
-p {
-  font-size: 1.4rem;
-  margin-bottom: 40px;
-}
+p { font-size: 1.4rem; margin-bottom: 40px; }
 
-.btn-group {
-  display: flex;
-  gap: 20px;
-}
+.btn-group { display: flex; gap: 20px; }
 
 button {
   padding: 15px 40px;
@@ -57,19 +48,9 @@ button {
   transition: 0.3s;
 }
 
-#yesBtn {
-  background: white;
-  color: #ff4d6d;
-}
+#yesBtn { background:white; color:#ff4d6d; }
+#noBtn { background:transparent; color:white; border:2px solid white; position: relative; }
 
-#noBtn {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-  position: relative;
-}
-
-/* Ring Screen */
 #ringContainer {
   display: none;
   position: fixed;
@@ -82,39 +63,24 @@ button {
   z-index: 2;
 }
 
-.ring {
-  font-size: 80px;
-  animation: ringOpen 1.5s ease forwards;
-}
+.ring { font-size: 80px; animation: ringOpen 1.5s ease forwards; }
+@keyframes ringOpen { 0% {transform: scale(0) rotate(0deg);} 100% {transform: scale(1) rotate(360deg);} }
 
-@keyframes ringOpen {
-  0% { transform: scale(0) rotate(0deg); }
-  100% { transform: scale(1) rotate(360deg); }
-}
+.successText { font-size:2.2rem; margin-top:20px; text-align:center; }
 
-.successText {
-  font-size: 2.2rem;
-  margin-top: 20px;
-  text-align: center;
-}
-
-/* Fireworks Canvas */
 canvas {
   position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none; /* important so clicks go through */
-  z-index: -1; /* behind everything */
+  top:0; left:0;
+  pointer-events: none;
+  z-index: -1;
 }
 </style>
 </head>
-
 <body>
 
 <div id="mainPage">
   <h1 class="glow">Heylo Varshitha ❤️</h1>
   <p>Will you be my Valentine (mine)? 💕</p>
-
   <div class="btn-group">
     <button id="yesBtn">YES 💍</button>
     <button id="noBtn">NO 😜</button>
@@ -136,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const mainPage = document.getElementById("mainPage");
   const ringContainer = document.getElementById("ringContainer");
 
-  /* 😈 NO button moves away */
+  /* NO button dodges */
   noBtn.addEventListener("mouseenter", () => {
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -144,9 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
   });
-  noBtn.addEventListener("click", e => e.preventDefault());
+  noBtn.addEventListener("click", e=>e.preventDefault());
 
-  /* 🎇 Fireworks setup */
+  /* Canvas setup */
   const canvas = document.getElementById("fireworks");
   const ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth;
@@ -158,57 +124,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   let particles = [];
-  let animationFrameId;
 
   function createFirework(x, y) {
-    for (let i = 0; i < 50; i++) {
+    for(let i=0;i<50;i++){
       particles.push({
-        x: x,
-        y: y,
-        radius: 2,
-        color: `hsl(${Math.random() * 360},100%,50%)`,
-        speedX: (Math.random() - 0.5) * 6,
-        speedY: (Math.random() - 0.5) * 6,
-        alpha: 1
+        x:x,
+        y:y,
+        radius:2 + Math.random()*2,
+        color:`hsl(${Math.random()*360},100%,50%)`,
+        speedX:(Math.random()-0.5)*8,
+        speedY:(Math.random()-0.7)*8,
+        gravity:0.05 + Math.random()*0.05,
+        alpha:1
       });
     }
   }
 
-  function animateFireworks() {
+  function animate() {
     ctx.fillStyle = "rgba(0,0,0,0.2)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 
-    particles.forEach((p, index) => {
+    particles.forEach((p,index)=>{
       p.x += p.speedX;
-      p.y += p.speedY;
-      p.alpha -= 0.01;
-
+      p.y += p.speedY + p.gravity;
+      p.alpha -= 0.015;
       ctx.globalAlpha = p.alpha;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
       ctx.fillStyle = p.color;
       ctx.fill();
+      ctx.globalAlpha = 1;
 
-      if (p.alpha <= 0) {
-        particles.splice(index, 1);
-      }
+      if(p.alpha<=0) particles.splice(index,1);
     });
 
-    animationFrameId = requestAnimationFrame(animateFireworks);
+    requestAnimationFrame(animate);
   }
 
   function startFireworks() {
-    setInterval(() => {
-      createFirework(
-        Math.random() * canvas.width,
-        Math.random() * canvas.height / 2
-      );
-    }, 500);
-    animateFireworks();
+    setInterval(()=>{
+      createFirework(Math.random()*canvas.width, canvas.height/2 + Math.random()*100);
+    },300);
+    animate();
   }
 
-  /* 💍 YES button click */
-  yesBtn.addEventListener("click", () => {
+  /* YES click triggers ring and fireworks */
+  yesBtn.addEventListener("click", ()=>{
     mainPage.style.display = "none";
     ringContainer.style.display = "flex";
     startFireworks();
@@ -216,6 +177,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-
 </body>
 </html>

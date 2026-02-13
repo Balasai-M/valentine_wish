@@ -12,7 +12,6 @@
     overflow: hidden;
   }
 
-  /* Main Page */
   #placeScreen, #mainPage {
     height: 100vh;
     display: flex;
@@ -64,7 +63,6 @@
     font-weight: bold;
     transition: transform 0.2s ease, width 0.3s ease;
     position: relative;
-    z-index: 1;
   }
 
   .yes-btn {
@@ -82,7 +80,6 @@
     transform: scale(1.08);
   }
 
-  /* Animation Screen */
   #animationScreen {
     position: fixed;
     inset: 0;
@@ -105,7 +102,6 @@
     100% { transform: scale(1); opacity: 1; }
   }
 
-  /* Status messages */
   #status {
     margin-top: 20px;
     font-size: 1.2rem;
@@ -117,7 +113,6 @@
     opacity: 1;
   }
 
-  /* Hearts */
   .heart {
     position: absolute;
     font-size: 24px;
@@ -133,21 +128,21 @@
 
 <body>
 
-<!-- Place Selection Screen -->
+<!-- PLACE SELECTION -->
 <div id="placeScreen">
   <h1>Choose a place first ❤️</h1>
   <p>Click on a place to continue...</p>
   <div class="place-list">
-    <div class="place" onclick="choosePlace('Beach')">Beach</div>
-    <div class="place" onclick="choosePlace('Park')">Park</div>
-    <div class="place" onclick="choosePlace('Cafe')">Cafe</div>
+    <div class="place" onclick="choosePlace('Beach 🏖️')">Beach 🏖️</div>
+    <div class="place" onclick="choosePlace('Park 🌳')">Park 🌳</div>
+    <div class="place" onclick="choosePlace('Cafe ☕')">Cafe ☕</div>
   </div>
 </div>
 
-<!-- Main Content -->
+<!-- MAIN QUESTION -->
 <div id="mainPage" style="display:none;">
-  <h1>Heylo Varshitha... ❤️</h1>
-  <p>Will you be my valentine(mine)?</p>
+  <h1>Heylo Varshitha.. ❤️</h1>
+  <p>Will you be mine?</p>
 
   <div class="btn-group">
     <button id="yesBtn" class="yes-btn">YES</button>
@@ -157,9 +152,9 @@
   <div id="status"></div>
 </div>
 
-<!-- YES Animation Screen -->
+<!-- SUCCESS SCREEN -->
 <div id="animationScreen">
-  <div id="successText">Yayyy! ❤️ Love Accepted 💖</div>
+  <div id="successText"></div>
 </div>
 
 <script>
@@ -169,8 +164,10 @@
   const mainPage = document.getElementById("mainPage");
   const animationScreen = document.getElementById("animationScreen");
   const placeScreen = document.getElementById("placeScreen");
+  const successText = document.getElementById("successText");
 
   let noCount = 0;
+  let selectedPlace = "";
 
   function showStatus(text) {
     status.textContent = text;
@@ -178,10 +175,8 @@
     setTimeout(() => status.classList.remove("show"), 2000);
   }
 
-  // Place selection
   function choosePlace(placeName) {
-    // Optional: show selected place somewhere
-    console.log("Place chosen:", placeName);
+    selectedPlace = placeName;
 
     placeScreen.style.opacity = "0";
     setTimeout(() => {
@@ -191,7 +186,6 @@
     }, 600);
   }
 
-  // NO button click logic
   noBtn.addEventListener("click", () => {
     noCount++;
 
@@ -199,20 +193,22 @@
       showStatus("Bad luck 😜 Try again!");
       noBtn.style.width = "80px";
       yesBtn.style.width = "160px";
-    } else if (noCount === 2) {
+    } 
+    else if (noCount === 2) {
       showStatus("Whatttt againn.... 🥺💔");
       noBtn.style.width = "60px";
       yesBtn.style.width = "200px";
-    } else {
+    } 
+    else {
       showStatus("Idhuku mela unaku option illa 😌❤️");
       noBtn.style.display = "none";
       yesBtn.style.width = "240px";
     }
   });
 
-  // NO button dodge effect
+  // Dodge effect
   noBtn.addEventListener("mouseenter", () => {
-    if (noCount < 2) { // dodge only first two tries
+    if (noCount < 2) {
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
       const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
       noBtn.style.position = "absolute";
@@ -221,13 +217,17 @@
     }
   });
 
-  // YES button click logic
   yesBtn.addEventListener("click", () => {
     mainPage.style.opacity = "0";
 
     setTimeout(() => {
       mainPage.style.display = "none";
       animationScreen.style.display = "flex";
+
+      // 🔥 Updated dynamic success message
+      successText.innerHTML = 
+        `Yayyy! ❤️ Love Accepted at the ${selectedPlace} 💖`;
+
       blastHearts();
     }, 600);
   });

@@ -1,181 +1,208 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For My Valentine 💖</title>
+<title>For Varshitha ❤️</title>
 
 <style>
 body {
   margin: 0;
   overflow: hidden;
-  font-family: 'Poppins', sans-serif;
-  text-align: center;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  height: 100vh;
 }
 
-/* Floating hearts background */
-.heart {
-  position: fixed;
-  color: rgba(255,255,255,0.6);
-  animation: float 6s linear infinite;
-  font-size: 20px;
-}
-
-@keyframes float {
-  0% { transform: translateY(100vh); opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
-}
-
-/* Name glow animation */
-#nameText {
-  font-size: 50px;
-  margin-top: 80px;
+/* Center Layout */
+#mainPage {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: white;
-  text-shadow: 0 0 10px #ff4da6,
-               0 0 20px #ff4da6,
-               0 0 40px #ff4da6;
-  animation: glow 2s infinite alternate;
+  text-align: center;
+  position: relative;
+}
+
+/* Glowing Name */
+.glow {
+  font-size: 3rem;
+  animation: glow 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
-  from { text-shadow: 0 0 10px #ff4da6; }
-  to { text-shadow: 0 0 30px #ff1a75; }
+  from { text-shadow: 0 0 10px #fff, 0 0 20px #ff4da6; }
+  to { text-shadow: 0 0 20px #fff, 0 0 40px #ff1a75; }
 }
 
-#question {
-  font-size: 28px;
-  margin-top: 20px;
-  color: white;
+p {
+  font-size: 1.4rem;
+  margin-bottom: 40px;
+}
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: 20px;
 }
 
 button {
-  padding: 12px 25px;
+  padding: 15px 40px;
   font-size: 18px;
+  border-radius: 30px;
   border: none;
-  border-radius: 25px;
   cursor: pointer;
-  margin: 20px;
+  font-weight: bold;
   transition: 0.3s;
 }
 
 #yesBtn {
-  background-color: #ff1a75;
-  color: white;
+  background: white;
+  color: #ff4d6d;
 }
 
 #noBtn {
-  background-color: white;
-  color: #ff1a75;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  position: relative;
 }
 
-/* Ring animation */
-#ring {
-  font-size: 60px;
+/* Ring Animation */
+#ringContainer {
   display: none;
-  animation: ringOpen 1.5s forwards;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #ff4d6d, #b5179e);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+}
+
+.ring {
+  font-size: 80px;
+  animation: ringOpen 1.5s ease forwards;
 }
 
 @keyframes ringOpen {
-  0% { transform: scale(0); }
-  100% { transform: scale(1.5); }
+  0% { transform: scale(0) rotate(0deg); }
+  100% { transform: scale(1) rotate(360deg); }
 }
 
-/* Celebration screen */
-#celebration {
-  display: none;
-  font-size: 40px;
-  margin-top: 50px;
-  color: white;
-  animation: pop 1s ease forwards;
+.successText {
+  font-size: 2.5rem;
+  margin-top: 20px;
 }
 
-@keyframes pop {
-  0% { transform: scale(0); }
-  100% { transform: scale(1); }
-}
-
+/* Canvas */
 canvas {
   position: fixed;
   top: 0;
   left: 0;
-  pointer-events: none;
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="nameText">Hey Varshitha 💖</h1>
-<h2 id="question">Will you be my Valentine (mine)?</h2>
+<div id="mainPage">
+  <h1 class="glow">Heylo Varshitha ❤️</h1>
+  <p>Will you be my Valentine (mine)? 💕</p>
 
-<button id="yesBtn">YES 💍</button>
-<button id="noBtn">NO 🙈</button>
+  <div class="btn-group">
+    <button id="yesBtn">YES 💍</button>
+    <button id="noBtn">NO 😜</button>
+  </div>
+</div>
 
-<div id="ring">💍</div>
-<div id="celebration">She said YES! 💖✨</div>
+<div id="ringContainer">
+  <div class="ring">💍</div>
+  <div class="successText">She said YES at the location ❤️🎉</div>
+</div>
 
 <canvas id="fireworks"></canvas>
 
 <script>
-// Floating hearts
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-  document.body.appendChild(heart);
-
-  setTimeout(() => heart.remove(), 6000);
-}, 500);
-
-// NO button move once
-let moved = false;
+const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
+const mainPage = document.getElementById("mainPage");
+const ringContainer = document.getElementById("ringContainer");
 
+/* 🔥 NO button runs away forever */
 noBtn.addEventListener("mouseenter", () => {
-  if (!moved) {
-    moved = true;
-    noBtn.style.position = "absolute";
-    noBtn.style.top = Math.random() * 400 + "px";
-    noBtn.style.left = Math.random() * 600 + "px";
-  }
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
 });
 
-// YES logic
-document.getElementById("yesBtn").addEventListener("click", () => {
-  document.getElementById("ring").style.display = "block";
-
-  setTimeout(() => {
-    document.getElementById("celebration").style.display = "block";
-    startFireworks();
-  }, 1500);
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
 });
 
-// Simple fireworks
+/* 💍 YES Click */
+yesBtn.addEventListener("click", () => {
+  mainPage.style.display = "none";
+  ringContainer.style.display = "flex";
+  startFireworks();
+});
+
+/* 🎆 Fireworks */
 const canvas = document.getElementById("fireworks");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-function startFireworks() {
-  for (let i = 0; i < 100; i++) {
-    setTimeout(() => {
-      drawFirework();
-    }, i * 50);
+let particles = [];
+
+function createFirework(x, y) {
+  for (let i = 0; i < 50; i++) {
+    particles.push({
+      x: x,
+      y: y,
+      radius: 2,
+      color: `hsl(${Math.random() * 360},100%,50%)`,
+      speedX: (Math.random() - 0.5) * 6,
+      speedY: (Math.random() - 0.5) * 6,
+      alpha: 1
+    });
   }
 }
 
-function drawFirework() {
-  const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.height;
-  const radius = Math.random() * 3 + 2;
-  const color = `hsl(${Math.random()*360}, 100%, 50%)`;
+function animateFireworks() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.beginPath();
-  ctx.arc(x, y, radius, 0, Math.PI*2);
-  ctx.fillStyle = color;
-  ctx.fill();
+  particles.forEach((p, index) => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.alpha -= 0.01;
+
+    ctx.globalAlpha = p.alpha;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+
+    if (p.alpha <= 0) {
+      particles.splice(index, 1);
+    }
+  });
+
+  requestAnimationFrame(animateFireworks);
+}
+
+function startFireworks() {
+  setInterval(() => {
+    createFirework(
+      Math.random() * canvas.width,
+      Math.random() * canvas.height / 2
+    );
+  }, 600);
+
+  animateFireworks();
 }
 </script>
 

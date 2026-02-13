@@ -1,264 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Heylo Varshitha ❤️</title>
+<title>For My Valentine 💖</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    color: white;
-  }
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
 
-  #placeScreen, #mainPage {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    transition: opacity 0.6s ease;
-  }
+/* Floating hearts background */
+.heart {
+  position: fixed;
+  color: rgba(255,255,255,0.6);
+  animation: float 6s linear infinite;
+  font-size: 20px;
+}
 
-  h1 {
-    font-size: 2.8rem;
-  }
+@keyframes float {
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
 
-  .glow-name {
-    font-size: 3rem;
-    font-weight: bold;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
+/* Name glow animation */
+#nameText {
+  font-size: 50px;
+  margin-top: 80px;
+  color: white;
+  text-shadow: 0 0 10px #ff4da6,
+               0 0 20px #ff4da6,
+               0 0 40px #ff4da6;
+  animation: glow 2s infinite alternate;
+}
 
-  @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d; }
-    to { text-shadow: 0 0 20px #fff, 0 0 40px #ff4d6d; }
-  }
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff4da6; }
+  to { text-shadow: 0 0 30px #ff1a75; }
+}
 
-  .place-list, .btn-group {
-    display: flex;
-    gap: 20px;
-  }
+#question {
+  font-size: 28px;
+  margin-top: 20px;
+  color: white;
+}
 
-  .place {
-    padding: 15px 30px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+button {
+  padding: 12px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 20px;
+  transition: 0.3s;
+}
 
-  .place:hover {
-    transform: scale(1.1);
-    background: rgba(255,255,255,0.35);
-  }
+#yesBtn {
+  background-color: #ff1a75;
+  color: white;
+}
 
-  button {
-    padding: 15px 40px;
-    font-size: 18px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: width 0.3s ease, transform 0.2s ease;
-  }
+#noBtn {
+  background-color: white;
+  color: #ff1a75;
+}
 
-  .yes-btn {
-    background: white;
-    color: #ff4d6d;
-  }
+/* Ring animation */
+#ring {
+  font-size: 60px;
+  display: none;
+  animation: ringOpen 1.5s forwards;
+}
 
-  .no-btn {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-  }
+@keyframes ringOpen {
+  0% { transform: scale(0); }
+  100% { transform: scale(1.5); }
+}
 
-  button:hover {
-    transform: scale(1.08);
-  }
+/* Celebration screen */
+#celebration {
+  display: none;
+  font-size: 40px;
+  margin-top: 50px;
+  color: white;
+  animation: pop 1s ease forwards;
+}
 
-  #status {
-    margin-top: 20px;
-    opacity: 0;
-    transition: 0.3s;
-  }
+@keyframes pop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
 
-  #status.show {
-    opacity: 1;
-  }
-
-  #animationScreen {
-    position: fixed;
-    inset: 0;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background: radial-gradient(circle, #1a1a1a, #000);
-  }
-
-  #successText {
-    font-size: 2.8rem;
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  /* Ring animation */
-  .ring {
-    font-size: 100px;
-    animation: ringOpen 1.5s ease forwards;
-  }
-
-  @keyframes ringOpen {
-    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-
-  canvas {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-  }
-
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
 </style>
 </head>
 
 <body>
 
+<h1 id="nameText">Hey Varshitha 💖</h1>
+<h2 id="question">Will you be my Valentine (mine)?</h2>
+
+<button id="yesBtn">YES 💍</button>
+<button id="noBtn">NO 🙈</button>
+
+<div id="ring">💍</div>
+<div id="celebration">She said YES! 💖✨</div>
+
 <canvas id="fireworks"></canvas>
 
-<!-- PLACE SCREEN -->
-<div id="placeScreen">
-  <h1>Choose a place first ❤️</h1>
-  <div class="place-list">
-    <div class="place" onclick="choosePlace('Beach 🏖️')">Beach 🏖️</div>
-    <div class="place" onclick="choosePlace('Park 🌳')">Park 🌳</div>
-    <div class="place" onclick="choosePlace('Cafe ☕')">Cafe ☕</div>
-  </div>
-</div>
-
-<!-- MAIN QUESTION -->
-<div id="mainPage" style="display:none;">
-  <div class="glow-name">Heylo Varshitha ❤️</div>
-  <h1>Will you be my Valentine (mine)? 💖</h1>
-
-  <div class="btn-group">
-    <button id="yesBtn" class="yes-btn">YES</button>
-    <button id="noBtn" class="no-btn">NO</button>
-  </div>
-
-  <div id="status"></div>
-</div>
-
-<!-- SUCCESS SCREEN -->
-<div id="animationScreen">
-  <div class="ring">💍</div>
-  <div id="successText"></div>
-</div>
-
 <script>
-  const yesBtn = document.getElementById("yesBtn");
-  const noBtn = document.getElementById("noBtn");
-  const status = document.getElementById("status");
-  const mainPage = document.getElementById("mainPage");
-  const animationScreen = document.getElementById("animationScreen");
-  const placeScreen = document.getElementById("placeScreen");
-  const successText = document.getElementById("successText");
+// Floating hearts
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+  document.body.appendChild(heart);
 
-  let noCount = 0;
-  let selectedPlace = "";
+  setTimeout(() => heart.remove(), 6000);
+}, 500);
 
-  function choosePlace(placeName) {
-    selectedPlace = placeName;
-    placeScreen.style.display = "none";
-    mainPage.style.display = "flex";
+// NO button move once
+let moved = false;
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseenter", () => {
+  if (!moved) {
+    moved = true;
+    noBtn.style.position = "absolute";
+    noBtn.style.top = Math.random() * 400 + "px";
+    noBtn.style.left = Math.random() * 600 + "px";
   }
+});
 
-  function showStatus(text) {
-    status.textContent = text;
-    status.classList.add("show");
-    setTimeout(() => status.classList.remove("show"), 2000);
-  }
+// YES logic
+document.getElementById("yesBtn").addEventListener("click", () => {
+  document.getElementById("ring").style.display = "block";
 
-  noBtn.addEventListener("click", () => {
-    noCount++;
-
-    if (noCount === 1) {
-      showStatus("Bad luck 😜 Try again!");
-      noBtn.style.width = "80px";
-      yesBtn.style.width = "160px";
-    } else if (noCount === 2) {
-      showStatus("Whatttt againn.... 🥺💔");
-      noBtn.style.width = "60px";
-      yesBtn.style.width = "200px";
-    } else {
-      showStatus("Idhuku mela unaku option illa 😌❤️");
-      noBtn.style.display = "none";
-      yesBtn.style.width = "240px";
-    }
-  });
-
-  noBtn.addEventListener("mouseenter", () => {
-    if (noCount < 2) {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-      noBtn.style.position = "absolute";
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
-  });
-
-  yesBtn.addEventListener("click", () => {
-    mainPage.style.display = "none";
-    animationScreen.style.display = "flex";
-    successText.innerHTML =
-      `She said YES at the ${selectedPlace} ❤️✨`;
+  setTimeout(() => {
+    document.getElementById("celebration").style.display = "block";
     startFireworks();
-  });
+  }, 1500);
+});
 
-  /* FIREWORKS EFFECT */
-  const canvas = document.getElementById("fireworks");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+// Simple fireworks
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-  function startFireworks() {
-    setInterval(() => {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height / 2;
-      for (let i = 0; i < 30; i++) {
-        drawParticle(x, y);
-      }
-    }, 600);
+function startFireworks() {
+  for (let i = 0; i < 100; i++) {
+    setTimeout(() => {
+      drawFirework();
+    }, i * 50);
   }
+}
 
-  function drawParticle(x, y) {
-    const radius = Math.random() * 3;
-    const angle = Math.random() * 2 * Math.PI;
-    const speed = Math.random() * 4;
-    const dx = Math.cos(angle) * speed;
-    const dy = Math.sin(angle) * speed;
+function drawFirework() {
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height;
+  const radius = Math.random() * 3 + 2;
+  const color = `hsl(${Math.random()*360}, 100%, 50%)`;
 
-    let life = 30;
-
-    function animate() {
-      if (life <= 0) return;
-      ctx.fillStyle = `hsl(${Math.random()*360},100%,60%)`;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI*2);
-      ctx.fill();
-      x += dx;
-      y += dy;
-      life--;
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-  }
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI*2);
+  ctx.fillStyle = color;
+  ctx.fill();
+}
 </script>
 
 </body>
